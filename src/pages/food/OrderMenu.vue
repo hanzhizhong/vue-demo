@@ -30,6 +30,7 @@ export default {
 
 <style scoped>
     .menu{
+        position:relative;
         font-size:0.7rem;
         display:flex;
         flex-direction: row;

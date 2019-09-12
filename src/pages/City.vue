@@ -1,133 +1,33 @@
 <template>
   <div class="cities">
-      <v-header>
-          <a href="#" slot="right" class="right">登录|注册</a>
+      <v-header :title=currentCityName.name>
+          <router-link :to="{name:'login'}" slot="right" class="right">登录|注册</router-link>
       </v-header>
       <div class="container">
             <ul class="local-city">
                 <li>
                 <span>当前定位城市:</span><b>定位不准时，请在城市列表中选择</b>
                 </li>
-                <li @click="getShopName(1)">
-                    <!-- <router-link :to="{name:'searchCity',params:{aid:'1'}}" class="current-addr">上海</router-link> -->
-                    <span class="current-addr">上海</span>
+                <li @click="getShopName(currentCityName.id)" >
+                    <router-link  :to="{name:'searchCity',params:{aid:currentCityName.id}}" class="current-addr">{{currentCityName.name}}</router-link>
+                    <!-- <span class="current-addr">{{currentCityName}}</span> -->
                     <span><i class="fa fa-chevron-right"></i></span>
                 </li>
             </ul>
             <div class="city">
                 <div class="city-title">热门城市</div>
                 <ul class="city-list hot">
-                    <li>
-                        <a href="#">上海</a>
-                        <a href="#">上海</a>
-                        <a href="#">上海</a>
-                        <a href="#">上海</a>
-                        <a href="#">上海</a>
-                        <a href="#">上海</a>
-                        <a href="#">上海</a>
-                        <a href="#">上海</a>
+                    <li class="clearfix">
+                        <router-link v-for="(item,index) in hotCityName" :key="index" :to="{name:'searchCity',params:{aid:item.id}}">{{item.name}}</router-link>
                     </li>
                 </ul>
             </div>
             <div class="all-city">
-                <div class="city">
-                    <div class="city-title">A <span>(按字母表排序)</span></div>
+                <div class="city" v-for="(cityEn,index) in allCityName" :key="index">
+                    <div class="city-title">{{index}}<span v-if="index==='A'">(按字母表排序)</span></div>
                     <ul class="city-list">
-                        <li>
-                            <a href="#">上海</a>
-                            <a href="#">上海</a>
-                            <a href="#">上海</a>
-                            <a href="#">上海</a>
-                        
-                            <a href="#">上海</a>
-                            <a href="#">上海</a>
-                            <a href="#">上海</a>
-                            <a href="#">上海</a>
-                        </li>
-                        
-                    </ul>
-                </div>
-                <div class="city">
-                    <div class="city-title">A <span>(按字母表排序)</span></div>
-                    <ul class="city-list">
-                        <li>
-                            <a href="#">上海</a>
-                            <a href="#">上海</a>
-                            <a href="#">上海</a>
-                            <a href="#">上海</a>
-                        
-                            <a href="#">上海</a>
-                            <a href="#">上海</a>
-                            <a href="#">上海</a>
-                            <a href="#">上海</a>
-                        </li>
-                        
-                    </ul>
-                </div>
-                <div class="city">
-                    <div class="city-title">A <span>(按字母表排序)</span></div>
-                    <ul class="city-list">
-                        <li>
-                            <a href="#">上海</a>
-                            <a href="#">上海</a>
-                            <a href="#">上海</a>
-                            <a href="#">上海</a>
-                        
-                            <a href="#">上海</a>
-                            <a href="#">上海</a>
-                            <a href="#">上海</a>
-                            <a href="#">上海</a>
-                        </li>
-                        
-                    </ul>
-                </div>
-                <div class="city">
-                    <div class="city-title">A <span>(按字母表排序)</span></div>
-                    <ul class="city-list">
-                        <li>
-                            <a href="#">上海</a>
-                            <a href="#">上海</a>
-                            <a href="#">上海</a>
-                            <a href="#">上海</a>
-                        
-                            <a href="#">上海</a>
-                            <a href="#">上海</a>
-                            <a href="#">上海</a>
-                            <a href="#">上海</a>
-                        </li>
-                        
-                    </ul>
-                </div>
-                <div class="city">
-                    <div class="city-title">A <span>(按字母表排序)</span></div>
-                    <ul class="city-list">
-                        <li>
-                            <a href="#">上海</a>
-                            <a href="#">上海</a>
-                            <a href="#">上海</a>
-                            <a href="#">上海</a>
-                        
-                            <a href="#">上海</a>
-                            <a href="#">上海</a>
-                            <a href="#">上海</a>
-                            <a href="#">上海</a>
-                        </li>
-                        
-                    </ul>
-                </div>
-                <div class="city">
-                    <div class="city-title">A <span>(按字母表排序)</span></div>
-                    <ul class="city-list">
-                        <li>
-                            <a href="#">上海</a>
-                            <a href="#">上海</a>
-                            <a href="#">上海</a>
-                            <a href="#">上海</a>
-                        
-                            <a href="#">上海</a>
-                            <a href="#">上海</a>
-                            <a href="#">上海</a>
-                            <a href="#">上海</a>
+                        <li class="clearfix">
+                            <router-link v-for="(item,index) in cityEn" :key="index" :to="{name:'searchCity',params:{aid:item.id}}">{{item.name}}</router-link>
                         </li>
                         
                     </ul>
@@ -139,11 +39,23 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
 export default {
+    computed:{
+        ...mapState(['currentCityName','hotCityName','allCityName'])
+    },
+
     methods:{
         getShopName(aid){
             this.$router.push({name:'searchCity',params:{aid:aid}})
-        }
+        },
+        
+    },
+    mounted(){
+        //console.log('ssss')
+        this.$store.dispatch('getCityName','guess')
+        this.$store.dispatch('getHotCityName','hot')
+        this.$store.dispatch('getAllCityName','group')
     }
 }
 </script>
@@ -181,7 +93,6 @@ export default {
         margin-top:0.5rem;
         background-color:#fff;
         font-size:0.7rem;
-        box-sizing: border-box;
         border-top:1px solid #dadada;
     }
     .city-title span{
@@ -200,12 +111,17 @@ export default {
         width:25%;
         height:2.25rem;
         line-height:2.25rem;
-        display:inline-block;
+        display:block;
         text-align:center;
+        float:left;
         border-right:1px solid #dadada;
         border-bottom:1px solid #dadada;
         color:#666666;
         box-sizing: border-box;
+        overflow:hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
+        box-sizing:border-box;
     }
     .city-list li a:nth-child(4n){
         border-right:none;

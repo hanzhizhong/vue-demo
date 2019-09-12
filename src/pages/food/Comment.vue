@@ -47,48 +47,32 @@
 
     <div class="comment-list">
       <div class="comment-sort">
-        <ul>
-          <li class="active">全部</li>
-          <li>满意</li>
-          <li>不满意</li>
-          <li>只看有内容的评价</li>
+        <ul @click="commentTabShow($event)" ref="comm">
+          <li class="active" data="all">全部</li>
+          <li data="satisfaction">满意</li>
+          <li data="despair">不满意</li>
+          <li data="hasContent">只看有内容的评价</li>
         </ul>
       </div>
-      <div class="comment-content-container">
-        <div class="comment-content whole">
-          <div class="comment-template">
-            <div class="comment-avator">
-              <img src="../../assets/images/default.jpg" alt="用户头像" />
-            </div>
-            <div class="comment-customer">
-              <div class="comment-time">
-                <span>username</span>
-                <span>209-6-09</span>
-              </div>
-              <div class="comment-star">
-                <van-rate
-                v-model="serviceStar"
-                allow-half
-                void-icon="star"
-                void-color="#eee"
-                readonly
-                size="0.6rem"
-                gutter="0"
-                color="orange"
-              />按时送达
-              </div>
-              <ul class="comment-food">
-                <li>
-                  <img src="../../assets/images/pisa.jpeg" alt="食品简略图" />
-                  <br />超级至尊比萨-铁盘
-                </li>
-              </ul>
-            </div>
-          </div>
+      <div ref="commentContentContainer">
+        <div class="comment-content" v-if="whole">
+          <v-comment></v-comment>
+          <v-comment></v-comment>
+          <v-comment></v-comment>
+          <v-comment></v-comment>
         </div>
-        <div class="comment-content satisfaction"></div>
-        <div class="comment-content despair"></div>
-        <div class="comment-content has-content"></div>
+        <div class="comment-content" v-if="satisfaction">
+          <v-comment></v-comment>
+          <v-comment></v-comment>
+          <v-comment></v-comment>
+        </div>
+        <div class="comment-content" v-if="despair">
+          <v-comment></v-comment>
+          <v-comment></v-comment>
+        </div>
+        <div class="comment-content" v-if="hasContent">
+          <v-comment></v-comment>
+        </div>
       </div>
     </div>
   </div>
@@ -103,8 +87,46 @@ export default {
   data() {
     return {
       serviceStar: 4.7,
-      dinnerStar: 4.8
+      dinnerStar: 4.8,
+      whole:true,
+      satisfaction:false,
+      despair:false,
+      hasContent:false,
     };
+  },
+  methods:{
+    commentTabShow(event){
+      if(event.toElement.nodeName==='UL'){
+        return false 
+      }else{
+        console.log(event)
+        const aLi=this.$refs.comm.children;
+        for(let item of aLi){
+          item.removeAttribute('class')
+        }
+        this.whole=false;
+        this.satisfaction=false;
+        this.despair=false;
+        this.hasContent=false;
+        event.target.setAttribute('class','active')
+        const sVal=event.target.getAttribute('data')
+        switch(sVal){
+          case 'all':
+            this.whole=true;
+            break;
+          case 'satisfaction':
+            this.satisfaction=true;
+            break;
+          case 'despair':
+            this.despair=true;
+            break;
+          case 'hasContent':
+            this.hasContent=true;
+            break;
+        }
+      }
+      
+    }
   }
 };
 </script>
@@ -157,7 +179,7 @@ export default {
   color: orange;
 }
 .comment-list {
-  margin: 0.5rem 0;
+  margin-top: 0.5rem;
   background-color: #fff;
   border-top: 1px solid #dadada;
   box-sizing: border-box;
@@ -184,48 +206,7 @@ export default {
   color: #fff;
 }
 .comment-content{
-  padding:0.5rem 0.5rem;
+  padding:0 0.5rem;
 }
-.comment-template{
-  width:100%;
-  display:flex;
-  flex-direction: row;
-  justify-content: flex-start;
-}
-.comment-avator{
-  width:12.8%;
-}
-.comment-avator img{
-  width:2.4rem;
-  border-radius: 50% 50%;
-}
-.comment-customer{
-  width:87.2%;
-  padding-left:0.5rem;
-}
-.comment-customer .comment-time{
-  display:flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-.comment-star {
-  display:flex;
-  flex-direction: row;
-  line-height:1.4rem;
-}
-.comment-food{
-  width:100%;
-  display:flex;
-  flex-direction: row;
-}
-.comment-food li{
-  width:3.75rem;
-  white-space: nowrap;
-  overflow:hidden;
-  text-overflow: ellipsis;
-}
-.comment-food li img{
-  width:100%;
-  
-}
+
 </style>

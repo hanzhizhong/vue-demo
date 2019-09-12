@@ -1,7 +1,7 @@
 <template>
   <div class="shop">
-      <v-header>
-        <span slot="left" class="left"><i class="fa fa-angle-left"></i></span>
+      <v-header :title="sortedPageTitle[0]">
+        <span slot="left" class="left" @click="goback"><i class="fa fa-angle-left"></i></span>
       </v-header>
       <div class="shop-head-list">
         <van-dropdown-menu>
@@ -34,13 +34,14 @@
         </van-dropdown-menu>
       </div>
       <div class="container">
-        <v-shop></v-shop>
+        <v-shop :shopName="nearestShop"></v-shop>
       </div>
   </div>
 </template>
 
 <script>
-import { DropdownMenu, DropdownItem,TreeSelect } from 'vant';
+import { DropdownMenu, DropdownItem,TreeSelect} from 'vant';
+import {mapState} from 'vuex'
 export default {
   components:{
     [DropdownMenu.name]:DropdownMenu,
@@ -49,6 +50,7 @@ export default {
   },
   data(){
     return{
+      title:'',
       items:[
         {
           // 导航名称
@@ -76,6 +78,17 @@ export default {
         { text: '距离最近', value: 1 },
         { text: '销售最高', value: 2 }
       ],
+    }
+  },
+  computed:{
+    ...mapState(['sortedPageTitle','nearestShop'])
+  },
+  mounted(){
+    
+  },
+  methods:{
+    goback(){
+      this.$router.go(-1)
     }
   }
 }

@@ -1,37 +1,36 @@
 <template>
-  <ul>
-    <li v-for="n in 10" :key="n" @click="showShopPage(n)">
+  <ul v-if="shopName.length>0">
+    <li v-for="(item,index) in shopName" :key="index" @click="showShopPage">
       <div class="shop-list">
         <div class="shop-pic">
-          <img src="../../assets/images/shop.jpg" alt="商家的展示图片" />
+          <img :src=baseURL+item.image_path alt="商家的展示图片" />
         </div>
         <div class="shop-title">
           <h3>
-            <span>品牌</span>效果演示
+            <span>品牌</span>{{item.name}}
           </h3>
           <div class="shop-stars">
             <van-rate
               class="star-ico"
-              v-model="stars"
+              v-model="item.rating"
               allow-half
               void-icon="star"
               void-color="#eee"
               gutter="0"
               readonly
             />
-            <span>4.7</span> 月售106单
+            <span>{{item.rating}}</span> 月售{{item.recent_order_num}}单
           </div>
-          <div class="shop-deliver">&yen;20起送 / 配送费用约&yen;5</div>
+          <div class="shop-deliver">&yen;{{item.float_minimum_order_amount}}起送 / 配送费用约&yen;{{item.float_delivery_fee}}</div>
         </div>
         <div class="shop-sign">
-          <p>保 准 票</p>
+          <p><span v-for="(data,index) in item.supports" :key="index">&nbsp;{{data.icon_name}}</span></p>
           <div class="shop-tag">
-            <span class="tag-deliver">蜂鸟专送</span>
-            <span class="tag-arrive">准时达</span>
+            <span class="tag-deliver" >{{getText(item.delivery_mode)}}</span>
+            <span class="tag-arrive" v-for="(data,index) in item.supports" :key="index" v-if="data.id===9">{{data.name}}</span>
           </div>
           <div class="shop-deliver-load">
-            10公里 /
-            <span class="deliver-time">40分钟</span>
+            {{item.distance}}/<span class="deliver-time">{{item.order_lead_time}}</span>
           </div>
         </div>
       </div>
@@ -45,16 +44,29 @@ export default {
   components:{
     [Rate.name]:Rate
   },
+  props:{
+    shopName:Array,
+  },
   data(){
     return{
-      stars:4.7,
+      //stars:4.7,
+      baseURL:'https://elm.cangdu.org/img/',
     }
   },
   methods:{
-    showShopPage(n){
+    showShopPage(){
       this.$router.push('/food/menu')
+    },
+    getText(args){
+      try{
+        let ret=JSON.stringify(args)
+        ret=JSON.parse(ret)
+        return ret.text
+      }catch(e){
+        return ''
+      }
     }
-  }
+  },
 };
 </script>
 
@@ -68,12 +80,12 @@ export default {
   justify-content: space-between;
 }
 .shop-list .shop-pic {
-  width: 3.2rem;
-  height: 3.2rem;
+  width: 17.6%;
   display: inline-block;
   overflow: hidden;
+  font-size:0.6rem;
 }
-.shop-pic img {
+.shop-list .shop-pic img {
   width: 100%;
 }
 .shop-title {
@@ -119,6 +131,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  
 }
 .shop-sign p {
   font-size: 0.3rem;
@@ -148,6 +161,10 @@ export default {
 }
 .shop-deliver-load {
   color: #999999;
+  text-align:right;
+  overflow:hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .shop-deliver-load span {
   color: cadetblue;

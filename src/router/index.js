@@ -42,7 +42,7 @@ const routes=[
 
     {path:'/city',name:'city',component:City},
     {path:'/city/:aid',name:'searchCity',component:SearchCity},
-    {path:'/',redirect:{name:'home'}}
+    {path:'/',redirect:{name:'city'}}
 ]
 
 const router =new VueRouter({

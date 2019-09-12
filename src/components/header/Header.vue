@@ -1,12 +1,22 @@
 <template>
   <div class="header">
-    <slot name="left"></slot>header
+    <slot name="left"></slot>
+    <span>{{title}}</span>
     <slot name="right"></slot>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  props:{
+    title:String,
+  },
+  data(){
+    return{
+
+    }
+  }
+};
 </script>
 
 <style scoped>
@@ -21,6 +31,13 @@ export default {};
   line-height: 2.2rem;
   text-align: center;
   color: #fff;
+}
+.header span{
+  width:50%;
+  display:inline-block;
+  overflow:hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .right {
   position: absolute;

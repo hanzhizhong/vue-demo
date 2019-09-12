@@ -1,6 +1,6 @@
 <template>
   <div class="login">
-      <div class="goback"><i class="fa fa-angle-left"></i></div>
+      <div class="goback" @click="goback"><i class="fa fa-angle-left"></i></div>
       <div class="login-form">
           <h2>登录注册</h2>
           <form action="#" method="post">
@@ -40,6 +40,11 @@ export default {
     data(){
         return{
             isShowCode:false
+        }
+    },
+    methods:{
+        goback(){
+            this.$router.go(-1)
         }
     }
 }

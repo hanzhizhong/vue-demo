@@ -9,8 +9,8 @@
                 <span>当前定位城市:</span><b>定位不准时，请在城市列表中选择</b>
                 </li>
                 <li @click="getShopName(currentCityName.id)" >
-                    <router-link  :to="{name:'searchCity',params:{aid:currentCityName.id}}" class="current-addr">{{currentCityName.name}}</router-link>
-                    <!-- <span class="current-addr">{{currentCityName}}</span> -->
+                    <!-- <router-link  :to="{name:'searchCity',params:{aid:currentCityName.id}}" class="current-addr">{{currentCityName.name}}</router-link> -->
+                    <span class="current-addr">{{currentCityName.name}}</span>
                     <span><i class="fa fa-chevron-right"></i></span>
                 </li>
             </ul>
@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import {mapState} from 'vuex'
+import {mapState} from 'vuex' 
 export default {
     computed:{
         ...mapState(['currentCityName','hotCityName','allCityName'])
@@ -52,7 +52,6 @@ export default {
         
     },
     mounted(){
-        //console.log('ssss')
         this.$store.dispatch('getCityName','guess')
         this.$store.dispatch('getHotCityName','hot')
         this.$store.dispatch('getAllCityName','group')

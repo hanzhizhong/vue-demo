@@ -77,6 +77,28 @@ export default{
             aTitle.push(args)
         }
         session.setSession('shop_title',aTitle)
+    },
+    //获取食品分类
+    get_all_categroy(state,args){
+        state.categroy=args;
+    },
+    //获取配送方式
+    get_all_delivery_model(state,args){
+        state.deliveryModel=args;
+    },
+    //商家属性
+    get_all_activity_attributes(state,args){
+        state.activityAttributes=args;
+    },
+    //商家信息
+    get_restaurant_info_by_shop_id(state,args){
+        state.restaurantInfo=args;
+    },
+    //食品列表
+    get_all_restaurant_menu(state,args){
+        state.restaurantMenu=args;
     }
+    
+
 
 }

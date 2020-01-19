@@ -1,8 +1,8 @@
 <template>
     <div class="footer">
       <ul class="footer-nav">
-        <li><router-link :to="{name:'home'}" :class="this.$route.name=='home'?'active':''"><i class="iconfont icon-changyonglogo40"></i><br/>外卖</router-link></li>
-        <li><router-link :to="{name:'search'}" :class="this.$route.name=='search'?'active':''"><i class="iconfont icon-sousuo"></i><br/>搜索</router-link></li>
+        <li><router-link :to="{name:'home'}" :class="this.$route.name=='home'?'active':''"><i class="iconfont icon-eleme"></i><br/>外卖</router-link></li>
+        <li><router-link :to="{name:'search'}" :class="this.$route.name=='search'?'active':''"><i class="iconfont icon-search"></i><br/>搜索</router-link></li>
         <li><router-link :to="{name:'order'}" :class="this.$route.name=='order'?'active':''"><i class="iconfont icon-74wodedingdan"></i><br/>订单</router-link></li>
         <li><router-link :to="{name:'profile'}" :class="this.$route.name=='profile'?'active':''"><i class="iconfont icon-wode"></i><br/>我的</router-link></li>
       </ul>

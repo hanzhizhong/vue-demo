@@ -1,29 +1,12 @@
-# demo2
+# 仿饿了么
 
-## Project setup
-```
+> 用vue.js仿饿了么做一款移动web端的项目
+
+#### 启动方法
+
+~~~javascript	
 npm install
-```
-
-### Compiles and hot-reloads for development
-```
 npm run serve
-```
-
-### Compiles and minifies for production
-```
 npm run build
-```
+~~~
 
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).

@@ -28,21 +28,45 @@ export const getFoodList=()=>{
     return axios.get('/v2/index_entry')
 }
 //6、获取商铺列表
-export const getShopNameNearest=({latitude,longitude})=>{
-    return axios.get('/shopping/restaurants',{params:{latitude,longitude}})
+export const getShopNameNearest=(args={})=>{
+    return axios.get('/shopping/restaurants',{params:args})
 }
 //7、搜索餐馆
 export const getSearchShop=({geohash,keyword})=>{
     return axios.get('/v4/restaurants',{params:{geohash,keyword}})
 }
 
+//8、获取所有商铺分类列表
+export const getCategroy=()=>{
+    return axios.get('/shopping/v2/restaurant/category')
+}
+//9、获取配送方式
+export const getDeliveryModel=()=>{
+    return axios.get('/shopping/v1/restaurants/delivery_modes')
+}
+//10、商家属性活动列表
+export const getActivityAttributes=()=>{
+    return axios.get('/shopping/v1/restaurants/activity_attributes')
+}
+//11、餐馆详情
+export const getRestaurantInfo=(args)=>{
+    return axios.get(`/shopping/restaurant/${args.shopId}`)
+}
+//
+export const getRestaurantMenu=(args)=>{
+    return axios .get(`/shopping/v2/menu`,{params:{restaurant_id:args.shopId}})
+}
+
+//20加入购物车
+export const post2CargoMenu=(args)=>{
+    console.log('aaa',args)
+    return axios.post('/v1/carts/checkout',args)
+}
 /*
 
 
-8、获取所有商铺分类列表
-9、获取配送方式
-10、商家属性活动列表
-11、餐馆详情
+
+
 12、上传图片
 13、添加餐馆
 14、添加食品种类

@@ -40,15 +40,15 @@ export default {
   watch:{
     foodSwipeList(value){
       this.$nextTick(()=>{
-        this.foodMenuList()
+        this.foodMenuList() 
       })
     },
-    detailAddr:{
+    /* detailAddr:{
       handle:function(n,o){
         console.log('sss')
       },
       deep:true
-    }
+    } */
   },
   data(){
     return{
@@ -79,7 +79,6 @@ export default {
     },
     //获取附近商家的店铺信息
     getNearestShop(){
-      console.log(this.detailAddr)
       try{
         const {latitude,longitude}={latitude:this.detailAddr[0].latitude,longitude:this.detailAddr[0].longitude}
       this.$store.dispatch('getNearestShopName',{latitude,longitude})
@@ -95,6 +94,7 @@ export default {
   },
   mounted(){
     this.getFoodSort();
+    this.getNearestShop()
   },
   
 }

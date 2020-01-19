@@ -69,9 +69,11 @@ export default {
       this.$store.dispatch('getSearchAddressName',{city_id:aid,keyword:this.addr})
     },
     changePage(geohash,item){
-      this.$store.dispatch('getDetailAddressByGeohash',geohash)
       this.$store.dispatch('saveSearchHistoryAddress',item)
-      this.$router.push({name:'home',query:{latitude:item.latitude,longitude:item.longitude}})
+      this.$store.dispatch('getDetailAddressByGeohash',geohash).then(ret=>{
+        this.$router.push({path:'/home',query:{latitude:item.latitude,longitude:item.longitude}}) 
+      })
+      
     },
     goback(){
       this.$router.go(-1)

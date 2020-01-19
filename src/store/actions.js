@@ -7,6 +7,12 @@ import {
     getFoodList,
     getShopNameNearest,
     getSearchShop,
+    getCategroy,
+    getDeliveryModel,
+    getActivityAttributes,
+    getRestaurantInfo,
+    getRestaurantMenu,
+    post2CargoMenu,
 } from '../ajax/index'
 
 export default {
@@ -101,8 +107,8 @@ export default {
     //获取附近商家的信息
     async getNearestShopName({
         commit
-    }, {latitude,longitude}) {
-        const ret = await getShopNameNearest({latitude,longitude})
+    }, {...args}={}) {
+        const ret = await getShopNameNearest(args)
         const nearestShop=ret.data;
         commit('get_nearest_shop_name',{nearestShop})
     },
@@ -123,6 +129,37 @@ export default {
     //设置菜单列表项页面的标题
     setMenuListTitle({commit},args){
         commit('set_menulist_title',{args})
+    },
+    //获取所有商铺分类列表
+    async getAllCategroy({commit}){
+        let ret=await getCategroy()
+        commit('get_all_categroy',ret.data)
+    },
+    //获取配送方式
+    async getAllDeliveryModel({commit}){
+        let ret=await getDeliveryModel()
+        commit('get_all_delivery_model',ret.data)
+    },
+    //获取商家的属性
+    async getAllActivityAttributes({commit}){
+        let ret=await getActivityAttributes()
+        commit('get_all_activity_attributes',ret.data)
+    },
+    //根据shopId获取餐馆的详细信息
+    async getRestaurantInfoByShopId({commit},{...args}){
+        let ret=await getRestaurantInfo(args)
+        commit('get_restaurant_info_by_shop_id',ret.data)
+    },
+    //获取食品列表
+    async getAllRestaurantMenu({commit},{...args}){
+        let ret=await getRestaurantMenu(args)
+        commit('get_all_restaurant_menu',ret.data)
+    },
+    //购物车中添加菜单
+    async add2CargoMenu({commit},{...args}){
+        let ret=await post2CargoMenu(args)
+        console.log('post',ret)
     }
+
 
 }

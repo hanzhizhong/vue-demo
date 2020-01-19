@@ -1,39 +1,42 @@
 <template>
   <div class="food">
     <div class="food-head">
-        <span><i class="fa fa-angle-left"></i></span>
+        <span @click="$router.go(-1)"><i class="fa fa-angle-left"></i></span>
     </div>
-    <div class="shop-current-info">
+    <template v-if="Object.keys(restaurantInfo).length>0">
+        <div class="shop-current-info">
       <div class="shop-bg">
-          <img class="shop-bg-big" src="../assets/images/shop.jpg" alt="背景图">
+          <img class="shop-bg-big" :src="baseUrl+restaurantInfo.image_path" alt="背景图">
           <span class="shop-cover"></span>
       </div>
       <div class="shop-logo">
-            <img src="../assets/images/shop.jpg" alt="logo图">
+            <img :src="baseUrl+restaurantInfo.image_path" alt="logo图">
         </div>
       <div class="shop-info-title">
         <h2>
-          <span>品牌</span>嘉禾一品
+          <span>品牌</span>{{restaurantInfo.name}}
           <i class="fa fa-caret-right"></i>
         </h2>
         <p>
-          <span>4.2</span>
-          <span>月售90单</span>
-          <span>蜂鸟专送&nbsp;约28分钟</span>
-          <span>距离1000m</span>
+          <span>{{restaurantInfo.rating}}</span>
+          <span>月售{{restaurantInfo.recent_order_num}}单</span>
+          <span>{{restaurantInfo.delivery_mode.text||'-'}}&nbsp;约{{restaurantInfo.order_lead_time||'-'}}分钟</span>
+          <span>距离{{restaurantInfo.distance||'-'}}m</span>
         </p>
-        <div class="shop-activity" @click="isShowAction=!isShowAction">
-          <label><span class="green">首单</span>新用户下单立减17元</label>
+        <template v-if="restaurantInfo.activities.length>0">
+            <div class="shop-activity" @click="isShowAction=!isShowAction">
+          <label><span :style="{backgroundColor:'#'+restaurantInfo.activities[0].icon_color}">restaurantInfo.activities[0].name</span>restaurantInfo.activities[0].description</label>
           <span class="shop-activity-count">
-            8个优惠
+            {{restaurantInfo.activities.length}}个优惠
             <i class="fa fa-angle-down"></i>
           </span>
         </div>
+        </template>
       </div>
       <div class="shop-subnav">
-        <p :class="$route.name=='menu'?'active':''"><router-link :to="{name:'menu'}">点餐</router-link></p>
-        <p :class="$route.name=='comment'?'active':''"><router-link :to="{name:'comment'}">评价</router-link></p>
-        <p :class="$route.name=='shopinfo'?'active':''"><router-link :to="{name:'shopinfo'}">商家</router-link></p>
+        <p @click="orderFood" :class="$route.name=='menu'?'active':''">点餐</p>
+        <p @click="commentFood" :class="$route.name=='comment'?'active':''">评价</p>
+        <p @click="shopinfoMsg" :class="$route.name=='shopinfo'?'active':''">商家</p>
       </div>
     </div>
     <div class="shop-subpages">
@@ -42,11 +45,13 @@
     <van-action-sheet v-model="isShowAction">
       <p>内容</p>
     </van-action-sheet>
+    </template>
   </div>
 </template>
 
 <script>
 import {ActionSheet} from 'vant'
+import { mapState } from 'vuex';
 export default {
     components:{
         [ActionSheet.name]:ActionSheet,
@@ -54,7 +59,31 @@ export default {
     data(){
         return{
             isShowAction:false,
+            baseUrl:'http://elm.cangdu.org/img/',
         }
+    },
+    computed:{
+        ...mapState(['restaurantInfo']),
+    },
+    methods:{
+        orderFood(){
+            this.$router.replace({path:'menu'}).catch(err=>{})
+        },
+        commentFood(){
+            this.$router.replace({path:'comment'}).catch(err=>{})
+        },
+        shopinfoMsg(){
+            this.$router.replace({path:'shopinfo'}).catch(err=>{})
+        },
+        //获取商家信息
+        getRestaurantInfo(){
+            let shopId=this.$route.query.shopId;
+            this.$store.dispatch('getRestaurantInfoByShopId',{shopId})
+            this.$store.dispatch('getAllRestaurantMenu',{shopId})
+        }
+    },
+    mounted(){
+        this.getRestaurantInfo()
     }
 };
 </script>
@@ -173,18 +202,15 @@ export default {
         width:100%;
         height:2.2rem;
         line-height:2.2rem;
+        position:absolute;
+        bottom:0;
     }
     .shop-subnav p{
         width:33.3%;
         text-align:center;
     }
-    .shop-subnav p a{
-        color:#666666;
-        line-height:2rem;
-        display:inline-block;
-        padding:0 0.5rem;
-    }
-    .shop-subnav .active a{
+    
+    .shop-subnav p.active {
         color:darkcyan;
         border-bottom:2px solid darkcyan;
     }

@@ -1,6 +1,6 @@
 <template>
   <ul v-if="shopName.length>0">
-    <li v-for="(item,index) in shopName" :key="index" @click="showShopPage">
+    <li v-for="(item,index) in shopName" :key="index" @click="showShopPage(item)">
       <div class="shop-list">
         <div class="shop-pic">
           <img :src=baseURL+item.image_path alt="商家的展示图片" />
@@ -27,7 +27,10 @@
           <p><span v-for="(data,index) in item.supports" :key="index">&nbsp;{{data.icon_name}}</span></p>
           <div class="shop-tag">
             <span class="tag-deliver" >{{getText(item.delivery_mode)}}</span>
-            <span class="tag-arrive" v-for="(data,index) in item.supports" :key="index" v-if="data.id===9">{{data.name}}</span>
+            <template v-for="(data,index) in item.supports" >
+              <span class="tag-arrive" v-if="data.id===9" :key="index">{{data.name}}</span>
+            </template>
+            
           </div>
           <div class="shop-deliver-load">
             {{item.distance}}/<span class="deliver-time">{{item.order_lead_time}}</span>
@@ -54,8 +57,8 @@ export default {
     }
   },
   methods:{
-    showShopPage(){
-      this.$router.push('/food/menu')
+    showShopPage(item){
+      this.$router.push({path:'food',name:'menu',query:{shopId:item.id}})
     },
     getText(args){
       try{

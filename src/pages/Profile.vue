@@ -41,19 +41,19 @@
                     </van-cell>
                     <van-cell class="profile-list-icon" title="积分商城" is-link>
                         <template slot="icon">
-                            <span><i class="iconfont icon-ziyuan"></i></span>
+                            <span><i class="iconfont icon-jifen"></i></span>
                         </template>
                     </van-cell>
                     <van-cell class="profile-list-icon" title="饿了么会员卡" is-link>
                         <template slot="icon">
-                            <span><i class="iconfont icon-tubiao-"></i></span>
+                            <span><i class="iconfont icon-huiyuanqia"></i></span>
                         </template>
                     </van-cell>
                 </van-cell-group>
                 <van-cell-group>
                     <van-cell class="profile-list-icon" title="服务中心" is-link>
                         <template slot="icon">
-                            <span><i class="iconfont icon-fuwuzhongxin"></i></span>
+                            <span><i class="iconfont icon-fuwu"></i></span>
                         </template>
                     </van-cell>
                     <van-cell class="profile-list-icon" title="下载饿了么APP" is-link>

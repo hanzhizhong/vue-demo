@@ -18,7 +18,7 @@ import ShopInfo from '../pages/food/ShopInfo'
 //组件的页面
 import SearchCity from '../components/city/SearchCity'
 
-const routes=[
+const routes=[ 
     {path:'/home',name:'home',component:Home,meta:{
         showPage:true
     }},
@@ -42,7 +42,7 @@ const routes=[
 
     {path:'/city',name:'city',component:City},
     {path:'/city/:aid',name:'searchCity',component:SearchCity},
-    {path:'/',redirect:{name:'city'}}
+    {path:'*',redirect:{name:'city'}}
 ]
 
 const router =new VueRouter({
